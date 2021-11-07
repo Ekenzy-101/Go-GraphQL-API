@@ -8,7 +8,6 @@ import (
 	"github.com/Ekenzy-101/Go-GraphQL-API/entity"
 	"github.com/Ekenzy-101/Go-GraphQL-API/graphql/types"
 	"github.com/Ekenzy-101/Go-GraphQL-API/service"
-	"github.com/google/uuid"
 	"github.com/graphql-go/graphql"
 )
 
@@ -42,8 +41,9 @@ var CreatePost = &graphql.Field{
 		post := &entity.Post{
 			Content: params.Args["content"].(string),
 			Title:   params.Args["title"].(string),
+			UserID:  cliams.Subject,
 		}
-		post, err = appService.CreatePost(params.Context, post, cliams.Subject)
+		post, err = appService.CreatePost(params.Context, post, post.UserID)
 		if err != nil {
 			return nil, err
 		}
@@ -72,12 +72,7 @@ var DeletePost = &graphql.Field{
 			return nil, err
 		}
 
-		postId := params.Args["id"].(string)
-		if _, err := uuid.Parse(postId); err != nil {
-			return nil, errors.New("the given postId is invalid")
-		}
-
-		if err := appService.DeletePostIfOwner(params.Context, postId, cliams.Subject); err != nil {
+		if err := appService.DeletePostIfOwner(params.Context, params.Args["id"].(string), cliams.Subject); err != nil {
 			return nil, err
 		}
 

@@ -1,12 +1,11 @@
 package query
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/Ekenzy-101/Go-GraphQL-API/config"
 	"github.com/Ekenzy-101/Go-GraphQL-API/graphql/types"
 	"github.com/Ekenzy-101/Go-GraphQL-API/service"
-	"github.com/google/uuid"
 	"github.com/graphql-go/graphql"
 )
 
@@ -31,6 +30,7 @@ var Posts = &graphql.Field{
 			if err != nil {
 				return nil, err
 			}
+
 			return posts, nil
 		}, nil
 	},
@@ -45,17 +45,13 @@ var Post = &graphql.Field{
 	},
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 		return func() (interface{}, error) {
-			postId := params.Args["id"].(string)
-			if _, err := uuid.Parse(postId); err != nil {
-				return nil, errors.New("the given postId is invalid")
-			}
-
 			appService := params.Context.Value(config.ServiceKey).(service.Service)
-			post, err := appService.GetPostByID(params.Context, postId)
+			post, err := appService.GetPostByID(params.Context, params.Args["id"].(string))
 			if err != nil {
 				return nil, err
 			}
 
+			fmt.Printf("%+v\n", post)
 			return post, err
 		}, nil
 	},

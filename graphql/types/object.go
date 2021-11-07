@@ -26,7 +26,7 @@ var Post = graphql.NewObject(graphql.ObjectConfig{
 		},
 		"createdAt": &graphql.Field{
 			Description: "Time when the post was created",
-			Type:        graphql.DateTime,
+			Type:        graphql.NewNonNull(graphql.DateTime),
 		},
 		"content": &graphql.Field{
 			Description: "Content of the post",
@@ -38,7 +38,7 @@ var Post = graphql.NewObject(graphql.ObjectConfig{
 		},
 		"updatedAt": &graphql.Field{
 			Description: "Time when the post was updated",
-			Type:        graphql.DateTime,
+			Type:        graphql.NewNonNull(graphql.DateTime),
 		},
 	},
 })
@@ -93,6 +93,7 @@ var User = graphql.NewObject(graphql.ObjectConfig{
 					if err != nil {
 						return nil, err
 					}
+
 					return posts, nil
 				}, nil
 			},
@@ -102,7 +103,7 @@ var User = graphql.NewObject(graphql.ObjectConfig{
 
 func init() {
 	Post.AddFieldConfig("user", &graphql.Field{
-		Description: "user of the post",
-		Type:        User,
+		Description: "User of the post",
+		Type:        graphql.NewNonNull(User),
 	})
 }

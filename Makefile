@@ -8,5 +8,6 @@ migrate:
 	@tern migrate -m ./migrations
 	
 restart-db:
-	@sudo service postgresql restart
+	# @sudo service postgresql restart
+	@sudo service mongod restart
 

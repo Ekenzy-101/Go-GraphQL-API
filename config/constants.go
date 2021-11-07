@@ -12,3 +12,8 @@ const (
 	AccessTokenCookieName   = "access_token"
 	AccessTokenTTLInSeconds = 60 * 60 * 24
 )
+
+const (
+	UsersCollection = "users"
+	PostsCollection = "posts"
+)

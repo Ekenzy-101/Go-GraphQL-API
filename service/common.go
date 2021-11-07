@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var (
@@ -21,9 +22,10 @@ var (
 var validate *validator.Validate
 
 var rules = map[string]string{
-	"content":  "required,max=2000",
-	"email":    "lowercase,email,max=255",
-	"id":       "uuid4",
+	"content": "required,max=2000",
+	"email":   "lowercase,email,max=255",
+	// "id":       "uuid4",
+	"id":       "objectid",
 	"name":     "required,name,max=100",
 	"password": "required,min=8,max=128,password",
 	"title":    "required,max=255",
@@ -36,10 +38,19 @@ func init() {
 		log.Fatalf("RegisterValidation [name] %v", err)
 	}
 
+	err = validate.RegisterValidation("objectid", validateObjectID)
+	if err != nil {
+		log.Fatalf("RegisterValidation [objectid] %v", err)
+	}
+
 	err = validate.RegisterValidation("password", validatePassword)
 	if err != nil {
 		log.Fatalf("RegisterValidation [password] %v", err)
 	}
+}
+
+func validateObjectID(fl validator.FieldLevel) bool {
+	return primitive.IsValidObjectID(fl.Field().String())
 }
 
 func validateName(fl validator.FieldLevel) bool {

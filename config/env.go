@@ -10,6 +10,10 @@ func DataBaseURL() string {
 	return os.Getenv("DATABASE_URL")
 }
 
+func DataBaseName() string {
+	return os.Getenv("DATABASE_NAME")
+}
+
 func Port() string {
 	port := os.Getenv("PORT")
 	if port == "" {

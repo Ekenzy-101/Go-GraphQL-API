@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/Ekenzy-101/Go-GraphQL-API/entity"
-	"github.com/Ekenzy-101/Go-GraphQL-API/repository/postgresql"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/Ekenzy-101/Go-GraphQL-API/repository/mongodb"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserRepository interface {
@@ -29,5 +29,6 @@ type Repository interface {
 }
 
 func New(dbClient interface{}) Repository {
-	return postgresql.New(dbClient.(*pgxpool.Pool))
+	return mongodb.New(dbClient.(*mongo.Client))
+	// return postgresql.New(dbClient.(*pgxpool.Pool))
 }
