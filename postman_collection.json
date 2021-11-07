@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "544cb75d-6e1a-4517-9b13-e306e6981c2b",
+		"name": "Go GraphQL API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation RegisterUser($email: String!, $name:String!, $password: String!) {\r\n    user: registerUser(email: $email, name: $name, password: $password) {\r\n        id\r\n        email\r\n        name\r\n        createdAt\r\n    }\r\n}",
+						"variables": "{\r\n    \"name\": \"\",\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation LoginUser($email: String!, $password: String!) {\r\n    user: loginUser(email: $email, password: $password) {\r\n        id\r\n        email\r\n        name\r\n        createdAt\r\n    }\r\n}",
+						"variables": "{\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation UpdatePost($id: String!, $content: String!, $title: String!) {\r\n    post: updatePost(id: $id, content: $content, title: $title) {\r\n        id\r\n        content\r\n        createdAt\r\n        title\r\n        updatedAt\r\n        user {\r\n            id\r\n            name\r\n        }\r\n    }\r\n}",
+						"variables": "{\r\n    \"id\": \"6187c2fac05ad3042856339c\",\r\n    \"content\": \"This is an updated post\",\r\n    \"title\": \"My updated post\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation CreatePost($content: String!, $title: String!) {\r\n    post: createPost(content: $content, title: $title) {\r\n        id\r\n        content\r\n        createdAt\r\n        title\r\n        updatedAt\r\n        user {\r\n            id\r\n            name\r\n        }\r\n    }\r\n}",
+						"variables": "{\r\n    \"content\": \"A post from kenzy\",\r\n    \"title\": \"Kenzy's second post\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Posts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPosts($skip: UInt $limit: UInt) {\r\n    posts(skip: $skip, limit: $limit) {\r\n        id\r\n        content\r\n        createdAt\r\n        title\r\n        updatedAt\r\n        user {\r\n            id\r\n            name\r\n        }\r\n    }\r\n}",
+						"variables": "{\r\n    \r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Auth User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Me {\r\n    user: me {\r\n        id\r\n        email\r\n        name\r\n        createdAt\r\n        posts {\r\n            id\r\n            content\r\n            createdAt\r\n            title\r\n            updatedAt\r\n            user {\r\n                id\r\n                name\r\n            }\r\n        }\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation LogoutUser {\r\n    logoutUser\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetPost($id: String!) {\r\n    post(id: $id) {\r\n        id\r\n        content\r\n        createdAt\r\n        title\r\n        updatedAt\r\n        user {\r\n            id\r\n            name\r\n        }\r\n    }\r\n}",
+						"variables": "{\r\n    \"id\": \"6187c2fac05ad3042856339c\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeletePost($id: String!) {\r\n    deletePost(id: $id) \r\n}",
+						"variables": "{\r\n    \"id\": \"6187c2fac05ad3042856339c\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "{{apiUrl}}",
+					"host": [
+						"{{apiUrl}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "apiUrl",
+			"value": "http://localhost:5000/graphql"
+		}
+	]
+}
