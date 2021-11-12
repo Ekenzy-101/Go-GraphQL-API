@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 
 	"github.com/Ekenzy-101/Go-GraphQL-API/config"
 	"github.com/Ekenzy-101/Go-GraphQL-API/graphql/schema"
@@ -42,7 +43,15 @@ func startApplication() error {
 
 	repo := repository.New(dbClient)
 	appService := service.New(repo)
+
 	router := gin.Default()
+	router.GET("/healthcheck", func(c *gin.Context) {
+		err := dbClient.(*mongo.Client).Ping(c.Request.Context(), readpref.Primary())
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+	})
 	router.POST("/graphql", func(c *gin.Context) {
 		ctx := context.WithValue(context.Background(), config.ServiceKey, appService)
 		ctx = context.WithValue(ctx, config.ResponseKey, c.Writer)
@@ -50,7 +59,7 @@ func startApplication() error {
 
 		graphqlHandler.ContextHandler(ctx, c.Writer, c.Request)
 	})
-	return router.Run(":5000")
+	return router.Run(":" + config.Port())
 }
 
 func setupDatabaseClient(ctx context.Context) (interface{}, error) {
