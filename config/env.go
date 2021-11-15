@@ -6,6 +6,10 @@ func AccessTokenSecret() string {
 	return os.Getenv("ACCESS_TOKEN_SECRET")
 }
 
+func CacheURL() string {
+	return os.Getenv("CACHE_URL")
+}
+
 func DataBaseURL() string {
 	return os.Getenv("DATABASE_URL")
 }

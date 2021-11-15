@@ -26,9 +26,11 @@ migrate:
 start-db:
 	# @sudo service postgresql start
 	@sudo service mongod start
+	@sudo service redis-server start
 
 stop-db:
 	# @sudo service postgresql stop
 	@sudo service mongod stop
+	@sudo service redis-server stop
 
 

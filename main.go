@@ -10,6 +10,7 @@ import (
 	"github.com/Ekenzy-101/Go-GraphQL-API/repository"
 	"github.com/Ekenzy-101/Go-GraphQL-API/service"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/graphql-go/handler"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -25,6 +26,11 @@ func main() {
 
 func startApplication() error {
 	ctx := context.Background()
+	cacheClient, err := setupCacheClient(ctx)
+	if err != nil {
+		return err
+	}
+
 	dbClient, err := setupDatabaseClient(ctx)
 	if err != nil {
 		return err
@@ -41,7 +47,7 @@ func startApplication() error {
 		Playground: true,
 	})
 
-	repo := repository.New(dbClient)
+	repo := repository.New(dbClient, cacheClient)
 	appService := service.New(repo)
 
 	router := gin.Default()
@@ -52,7 +58,7 @@ func startApplication() error {
 			return
 		}
 	})
-	router.POST("/graphql", func(c *gin.Context) {
+	router.Any("/graphql", func(c *gin.Context) {
 		ctx := context.WithValue(context.Background(), config.ServiceKey, appService)
 		ctx = context.WithValue(ctx, config.ResponseKey, c.Writer)
 		ctx = context.WithValue(ctx, config.RequestKey, c.Request)
@@ -91,4 +97,18 @@ func setupDatabaseClient(ctx context.Context) (interface{}, error) {
 
 	return client, nil
 	// return pgxpool.Connect(ctx, config.DataBaseURL())
+}
+
+func setupCacheClient(ctx context.Context) (interface{}, error) {
+	options, err := redis.ParseURL(config.CacheURL())
+	if err != nil {
+		return nil, err
+	}
+
+	client := redis.NewClient(options)
+	if err := client.Ping(ctx).Err(); err != nil {
+		return nil, err
+	}
+
+	return client, nil
 }

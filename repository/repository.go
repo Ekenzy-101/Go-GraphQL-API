@@ -5,6 +5,7 @@ import (
 
 	"github.com/Ekenzy-101/Go-GraphQL-API/entity"
 	"github.com/Ekenzy-101/Go-GraphQL-API/repository/mongodb"
+	"github.com/go-redis/redis/v8"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -28,7 +29,7 @@ type Repository interface {
 	UserRepository
 }
 
-func New(dbClient interface{}) Repository {
-	return mongodb.New(dbClient.(*mongo.Client))
+func New(dbClient interface{}, cacheClient interface{}) Repository {
+	return mongodb.New(dbClient.(*mongo.Client), cacheClient.(*redis.Client))
 	// return postgresql.New(dbClient.(*pgxpool.Pool))
 }
