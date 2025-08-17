@@ -1,5 +1,5 @@
-# golang:1.16-buster 
-FROM golang@sha256:9cb4d9fe93e7efd88048e2a30037b38547e0c61ff171e381b8a499b189a71817 as builder
+# golang:1.24 
+FROM golang@sha256:e155b5162f701b7ab2e6e7ea51cec1e5f6deffb9ab1b295cf7a697e81069b050 as builder
 
 WORKDIR /app
 
