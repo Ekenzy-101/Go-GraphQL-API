@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    restart: always
+    ports:
+      - 5000:5000
+    env_file:
+      - .env 
+
+  cache:
+    image: redis:8.0
+    restart: always
+    ports:
+      - 6379:6379
+
+  db:
+    image: mongo:8.0
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - .env 
+    
+
+  

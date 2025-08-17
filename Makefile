@@ -23,14 +23,13 @@ dev:
 migrate:
 	@tern migrate -m ./migrations
 	
+prod:
+	@docker compose up -d api
+
 start-db:
-	# @sudo service postgresql start
-	@sudo service mongod start
-	@sudo service redis-server start
+	@docker compose up -d cache db 
 
 stop-db:
-	# @sudo service postgresql stop
-	@sudo service mongod stop
-	@sudo service redis-server stop
+	@docker compose stop cache db
 
 
