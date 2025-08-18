@@ -21,15 +21,16 @@ dev:
 	@go run main.go
 
 migrate:
+	@go install github.com/jackc/tern/v2@latest
 	@tern migrate -m ./migrations --conn-string $(DATABASE_URL)
 	
 prod:
 	@docker compose up -d api
 
 start-db:
-	@docker compose up -d cache db 
+	@docker compose up -d cache $(DATABASE_TYPE) 
 
 stop-db:
-	@docker compose stop cache db
+	@docker compose stop cache $(DATABASE_TYPE)
 
 

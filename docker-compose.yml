@@ -13,16 +13,16 @@ services:
     ports:
       - 6379:6379
 
-  # db:
-  #   image: mongo:8.0
-  #   restart: always
-  #   ports:
-  #     - 27017:27017
-  #   environment:
-  #     MONGO_INITDB_ROOT_PASSWORD: ${ROOT_PASSWORD}
-  #     MONGO_INITDB_ROOT_USERNAME: ${ROOT_USERNAME}
+  mongo:
+    image: mongo:8.0
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: ${ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${ROOT_USERNAME}
 
-  db:
+  postgres:
     image: postgres:17.6
     restart: always
     ports:
