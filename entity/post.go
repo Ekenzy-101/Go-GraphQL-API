@@ -29,8 +29,9 @@ func (p *Post) SetID(value string) *Post {
 
 func (p *Post) SetUser(value *User) *Post {
 	p.User = &User{
-		ID:   value.ID,
-		Name: value.Name,
+		ID:    value.ID,
+		Name:  value.Name,
+		Email: value.Email,
 	}
 	p.UserID = ""
 	return p

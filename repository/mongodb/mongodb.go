@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type mongoRepository struct {
@@ -25,6 +26,10 @@ const (
 
 func New(dbClient *mongo.Client, cacheClient *redis.Client) *mongoRepository {
 	return &mongoRepository{dbClient: dbClient, cacheClient: cacheClient}
+}
+
+func (r *mongoRepository) CheckHealth(ctx context.Context) error {
+	return r.dbClient.Ping(ctx, readpref.Primary())
 }
 
 func (r *mongoRepository) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
@@ -99,7 +104,7 @@ func (r *mongoRepository) GetPostByID(ctx context.Context, id string) (*entity.P
 							"$expr": bson.M{"$eq": bson.A{"$_id", "$$userId"}}},
 					},
 					bson.M{
-						"$project": bson.M{"name": 1},
+						"$project": bson.M{"name": 1, "email": 1},
 					},
 				},
 				"as": "user",
@@ -151,7 +156,7 @@ func (r *mongoRepository) GetLatestPosts(ctx context.Context, pagination map[str
 							"$expr": bson.M{"$eq": bson.A{"$_id", "$$userId"}}},
 					},
 					bson.M{
-						"$project": bson.M{"name": 1},
+						"$project": bson.M{"name": 1, "email": 1},
 					},
 				},
 				"as": "user",
@@ -190,7 +195,7 @@ func (r *mongoRepository) GetUserPosts(ctx context.Context, pagination map[strin
 							"$expr": bson.M{"$eq": bson.A{"$_id", "$$userId"}}},
 					},
 					bson.M{
-						"$project": bson.M{"name": 1},
+						"$project": bson.M{"name": 1, "email": 1},
 					},
 				},
 				"as": "user",

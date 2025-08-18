@@ -19,6 +19,10 @@ func New(pool *pgxpool.Pool) *postgresRepository {
 	return &postgresRepository{pool: pool}
 }
 
+func (r *postgresRepository) CheckHealth(ctx context.Context) error {
+	return r.pool.Ping(ctx)
+}
+
 func (r *postgresRepository) CreateUser(ctx context.Context, user *entity.User) (*entity.User, error) {
 	args := []interface{}{user.Email, user.Name, user.Password}
 	dest := []interface{}{&user.ID, &user.CreatedAt}

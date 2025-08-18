@@ -21,7 +21,7 @@ dev:
 	@go run main.go
 
 migrate:
-	@tern migrate -m ./migrations
+	@tern migrate -m ./migrations --conn-string $(DATABASE_URL)
 	
 prod:
 	@docker compose up -d api
